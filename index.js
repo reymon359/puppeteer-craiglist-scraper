@@ -10,7 +10,7 @@ const cheerio = require('cheerio');
 
     const $ = cheerio.load(html);
     $(".result-title").each((index, element) => console.log($(element).text()));
-
+    $(".result-title").each((index, element) => console.log($(element).attr('href')));
     debugger;
 })();
 // }
