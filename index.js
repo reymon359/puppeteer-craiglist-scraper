@@ -13,11 +13,14 @@ const cheerio = require('cheerio');
     const results = $(".result-info").map((index, element) => {
         const titleElement = $(element).find('.result-title');
         const timeElement = $(element).find('.result-date');
+        const hoodElement = $(element).find('.result-hood');
         const title = $(titleElement).text();
         const url = $(titleElement).attr('href');
         const datePosted = new Date($(timeElement).attr('datetime'));
+        const hood = $(hoodElement).text().trim().replace('(', '').replace(')', '');
 
-        return { title, url, datePosted };
+
+        return { title, url, datePosted, hood };
     }).get();
 
     console.log(results);
