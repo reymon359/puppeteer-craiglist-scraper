@@ -1,5 +1,8 @@
 const puppeteer = require('puppeteer');
 const cheerio = require('cheerio');
+const mongoose = require('mongoose');
+
+
 
 async function scrapeListings(page) {
     await page.goto('https://sfbay.craigslist.org/d/software-qa-dba-etc/search/sof');
@@ -21,6 +24,11 @@ async function scrapeListings(page) {
     return listings;
 }
 
+async function connnectToMongoDb() {
+    await mongoose.connect('mongodb://<dbuser>:<dbpassword>@ds045017.mlab.com:45017/craiglistjobs', { useNewUrlParser: true, useUnifiedTopology: true }));
+console.log('database connected')
+}
+
 async function scrapeJobDescriptions(listings, page) {
     for (let i = 0; i < listings.length; i++) {
         await page.goto(listings[i].url);
@@ -40,6 +48,7 @@ async function sleep(miliseconds) {
 
 
 async function main() {
+    await connnectToMongoDb();
     const browser = await puppeteer.launch({ headless: false });
     const page = await browser.newPage();
     const listings = await scrapeListings(page);
