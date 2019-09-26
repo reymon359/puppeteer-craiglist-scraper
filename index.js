@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const cheerio = require('cheerio');
 const mongoose = require('mongoose');
-
+const Listing = require("./model/Listing");
 
 
 async function scrapeListings(page) {
@@ -38,6 +38,8 @@ async function scrapeJobDescriptions(listings, page) {
         const compensation = $("p.attrgroup > span:nth-child(1) > b").text();
         listings[i].jobDescription = jobDescription;
         listings[i].compensation = compensation;
+        const listingModel = new Listing(listings[i]);
+        await listingModel.save();
         await sleep(1000); // 1 page second sleep
     }
 }
