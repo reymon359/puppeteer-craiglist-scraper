@@ -27,7 +27,12 @@ async function scrapeJobDescriptions(listings, page) {
     for (let i = 0; i < listings.length; i++) {
         await page.goto(listings[i].url);
         const html = await page.content();
+        await sleep(1000); // 1 page second sleep
     }
+}
+
+async function sleep(miliseconds) {
+    return new Promise(resolve => setTimeout(resolve, miliseconds));
 }
 
 
@@ -42,4 +47,3 @@ async function main() {
 }
 
 main();
-debugger;
