@@ -2,7 +2,6 @@ const puppeteer = require('puppeteer');
 const cheerio = require('cheerio');
 
 async function scrapeListings(page) {
-    // (async() => {
     await page.goto('https://sfbay.craigslist.org/d/software-qa-dba-etc/search/sof');
     const html = await page.content();
 
@@ -20,13 +19,15 @@ async function scrapeListings(page) {
     }).get();
 
     return listings;
-    // })();
 }
 
 async function scrapeJobDescriptions(listings, page) {
     for (let i = 0; i < listings.length; i++) {
         await page.goto(listings[i].url);
         const html = await page.content();
+        const $ = cheerio.load(html);
+        const jobDescription = $('#postingbody').text();
+        listings[i].jobDescription = jobDescription;
         await sleep(1000); // 1 page second sleep
     }
 }
